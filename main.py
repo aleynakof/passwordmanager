@@ -1,7 +1,8 @@
 from tkinter import *
+from tkinter import messagebox
 
 
-# ---------------- Fonksiyon Bölümü
+# ---------------- Functions Part
 def center_window(w=300, h=300):
     ws = window.winfo_screenwidth()
     hs = window.winfo_screenheight()
@@ -10,8 +11,26 @@ def center_window(w=300, h=300):
     window.geometry('%dx%d+%d+%d' % (w, h, x, y))
 
 
-# ---------------- UI Bölümü
+def save():
+    website = website_text.get()
+    email = email_text.get()
+    password = password_text.get()
 
+    with open("data.txt", "a") as data_file:
+        # another way of formatting
+        data_file.write(f"{website} | {email} | {password}\n")
+
+    messagebox.showinfo(title=website, message="Your info is saved successfully")
+    clear()
+
+
+def clear():
+    website_text.set("")
+    email_text.set("")
+    password_text.set("")
+
+
+# ---------------- UI Part
 
 window = Tk()
 window.title("Password Manager-v1.0")
@@ -51,7 +70,7 @@ password_entry.grid(row=3, column=1)
 # buttons
 generate_password_button = Button(text="generate password")
 generate_password_button.grid(row=3, column=2)
-add_button = Button(text="Add", width=44)
+add_button = Button(text="Add", width=44, command=save)
 add_button.grid(row=4, column=1, columnspan=2)
 
 center_window(500, 400)
