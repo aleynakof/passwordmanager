@@ -1,8 +1,14 @@
 from tkinter import *
 from tkinter import messagebox
+import password
 
 
 # ---------------- Functions Part
+def generate_password():
+    password_text.set("")
+    password_text.set(password.sifre_uret())
+
+
 def center_window(w=300, h=300):
     ws = window.winfo_screenwidth()
     hs = window.winfo_screenheight()
@@ -16,17 +22,21 @@ def save():
     email = email_text.get()
     password = password_text.get()
 
-    with open("data.txt", "a") as data_file:
-        # another way of formatting
-        data_file.write(f"{website} | {email} | {password}\n")
+    if len(website) == 0 or len(email) == 0 or len(password) == 0:
+        messagebox.showinfo(title="uyarı", message="boş alanları geçemezsin!")
+    else:
+        sonuc = messagebox.askokcancel(title=website, message=f"These info is entered:\n"f"Email:{email}\n"f"Password:{password}\n"f"Are you sure to save?")
+        with open("data.txt", "a") as data_file:
+            # another way of formatting
+            data_file.write(f"{website} | {email} | {password}\n")
+        messagebox.showinfo(title=website, message="Your info is saved successfully")
 
-    messagebox.showinfo(title=website, message="Your info is saved successfully")
-    clear()
+        clear()
 
 
 def clear():
     website_text.set("")
-    email_text.set("")
+    # email_text.set("")
     password_text.set("")
 
 
@@ -68,7 +78,7 @@ password_entry = Entry(width=33, textvariable=password_text, show="*")
 password_entry.grid(row=3, column=1)
 
 # buttons
-generate_password_button = Button(text="generate password")
+generate_password_button = Button(text="generate password", command=generate_password)
 generate_password_button.grid(row=3, column=2)
 add_button = Button(text="Add", width=44, command=save)
 add_button.grid(row=4, column=1, columnspan=2)
